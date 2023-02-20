@@ -1,5 +1,16 @@
 @import "~bootstrap/scss/bootstrap";
+@import 'variable.scss';
+@import 'navbar.scss';
 
 body {
     background-color: lightgray;
+    user-select: none;
+}
+
+h1{
+    font-family: $title-font;
+}
+
+p{
+    font-family: $font;
 }

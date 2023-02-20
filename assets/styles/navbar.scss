@@ -1,0 +1,13 @@
+@import 'variable.scss';
+
+.navbar-brand{
+    font-size: $title-size;
+}
+
+.nav-link{
+    font-size: 1.3rem;
+}
+
+p{
+    margin-bottom: 0;
+}
