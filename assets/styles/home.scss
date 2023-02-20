@@ -1,0 +1,39 @@
+@import 'variable.scss';
+
+body{
+    background-image: url('../images/brisageBG.png');
+    background-size: cover;
+    h2{
+        color: white;
+        font-size: 45px;
+        font-family: $font;
+    }
+
+    .broker{
+        display: flex;
+        flex-direction: column;
+        width: 300px;
+        margin-top: 15vh;
+        .broker_top{
+            z-index: 1;
+            transition: .5s;
+        }
+        .broker_bottom{
+            margin-top: -360px;
+            z-index: 0;
+        }
+        cursor: pointer;
+    }
+    
+    .broker:hover{
+            .broker_top{
+                transform: translateY(-35px);
+            }
+    }
+    
+    span{
+        font-family: $title-font;
+    }
+    
+
+}

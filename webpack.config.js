@@ -13,7 +13,10 @@ Encore
     .setPublicPath('/build')
     // only needed for CDN's or subdirectory deploy
     //.setManifestKeyPrefix('build/')
-
+    .copyFiles({
+        from: './assets/images',
+        to:'images/[path][name].[hash:8].[ext]',
+    })
     /*
      * ENTRY CONFIG
      *
@@ -22,6 +25,7 @@ Encore
      */
     .addStyleEntry('variable','./assets/styles/variable.scss')
     .addStyleEntry('navbar','./assets/styles/navbar.scss')
+    .addStyleEntry('home','./assets/styles/home.scss')
     .addEntry('app', './assets/app.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
