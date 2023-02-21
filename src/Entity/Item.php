@@ -39,10 +39,14 @@ class Item
     #[ORM\ManyToMany(targetEntity: Ingredient::class)]
     private Collection $ingredient;
 
+    #[ORM\ManyToMany(targetEntity: Server::class, mappedBy: 'item')]
+    private Collection $servers;
+
     public function __construct()
     {
         $this->statistic = new ArrayCollection();
         $this->ingredient = new ArrayCollection();
+        $this->servers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -166,6 +170,33 @@ class Item
     public function removeIngredient(Ingredient $ingredient): self
     {
         $this->ingredient->removeElement($ingredient);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Server>
+     */
+    public function getServers(): Collection
+    {
+        return $this->servers;
+    }
+
+    public function addServer(Server $server): self
+    {
+        if (!$this->servers->contains($server)) {
+            $this->servers->add($server);
+            $server->addItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeServer(Server $server): self
+    {
+        if ($this->servers->removeElement($server)) {
+            $server->removeItem($this);
+        }
 
         return $this;
     }

@@ -16,11 +16,11 @@ class Statistic
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
-    #[ORM\Column]
-    private ?int $max = null;
+    #[ORM\Column(length: 50)]
+    private ?string $value = null;
 
     #[ORM\Column]
-    private ?int $min = null;
+    private ?int $price = null;
 
     public function getId(): ?int
     {
@@ -39,26 +39,26 @@ class Statistic
         return $this;
     }
 
-    public function getMax(): ?int
+    public function getValue(): ?string
     {
-        return $this->max;
+        return $this->value;
     }
 
-    public function setMax(int $max): self
+    public function setValue(?string $value): self
     {
-        $this->max = $max;
+        $this->value = $value;
 
         return $this;
     }
 
-    public function getMin(): ?int
+    public function getPrice(): ?int
     {
-        return $this->min;
+        return $this->price;
     }
 
-    public function setMin(int $min): self
+    public function setPrice(?int $price): self
     {
-        $this->min = $min;
+        $this->price = $price;
 
         return $this;
     }
