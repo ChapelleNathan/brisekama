@@ -19,8 +19,9 @@ class Statistic
     #[ORM\Column(length: 50)]
     private ?string $value = null;
 
-    #[ORM\Column]
-    private ?int $price = null;
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Rune $rune = null;
 
     public function getId(): ?int
     {
@@ -51,14 +52,14 @@ class Statistic
         return $this;
     }
 
-    public function getPrice(): ?int
+    public function getRune(): ?Rune
     {
-        return $this->price;
+        return $this->rune;
     }
 
-    public function setPrice(?int $price): self
+    public function setRune(Rune $rune): self
     {
-        $this->price = $price;
+        $this->rune = $rune;
 
         return $this;
     }
