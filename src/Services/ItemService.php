@@ -58,32 +58,37 @@ class ItemService
                 }
             };
             foreach ($item['recipe'] as $ingredients) {
-                foreach ($ingredients as $ingredient) {
-                    $itemIngredient = new ItemIngredient();
-                    $newItem->addItemIngredient($itemIngredient);
-                    $itemIngredient->setItem($newItem);
-                    $itemIngredient->setQuantity($ingredient['quantity']);
-                    $ankama_ids = [];
-                    foreach ($this->ingredientsArray as $ingredientArray) {
-                        $ankama_ids[] = $ingredientArray->getAnkamaId();
-                    }
-                    if (!$this->ingredientsArray || !in_array($ingredient['ankamaId'], $ankama_ids)) {
-                        $newIngredient = new Ingredient();
-                        $newIngredient->setName(key($ingredients));
-                        $newIngredient->setAnkamaId($ingredient['ankamaId']);
-                        $newIngredient->setImgUrl($ingredient['imgUrl']);
-                        $this->manager->persist($newIngredient);
-
-                        $itemIngredient->setIngredient($newIngredient);
-                    } else {
-                        $fetchedIngredient = $this->test->findByAnkamaId($ingredient['ankamaId']);
-                        $itemIngredient->setIngredient($fetchedIngredient[0]);
-                    }
-                    $this->manager->persist($itemIngredient);
-                }
+                $this->makeNewIngredient($ingredients, $newItem);
             }
             $this->manager->persist($newItem);
         }
         $this->manager->flush();
+    }
+
+    private function makeNewIngredient(array $ingredients, Item $newItem): void
+    {
+        foreach ($ingredients as $ingredient) {
+            $itemIngredient = new ItemIngredient();
+            $newItem->addItemIngredient($itemIngredient);
+            $itemIngredient->setItem($newItem);
+            $itemIngredient->setQuantity($ingredient['quantity']);
+            $ankama_ids = [];
+            foreach ($this->ingredientsArray as $ingredientsArray) {
+                $ankama_ids[] = $ingredientsArray->getAnkamaId();
+            }
+            if (!$this->ingredientsArray || !in_array($ingredient['ankamaId'], $ankama_ids)) {
+                $newIngredient = new Ingredient();
+                $newIngredient->setName(key($ingredients));
+                $newIngredient->setAnkamaId($ingredient['ankamaId']);
+                $newIngredient->setImgUrl($ingredient['imgUrl']);
+                $this->manager->persist($newIngredient);
+
+                $itemIngredient->setIngredient($newIngredient);
+            } else {
+                $fetchedIngredient = $this->test->findByAnkamaId($ingredient['ankamaId']);
+                $itemIngredient->setIngredient($fetchedIngredient[0]);
+            }
+            $this->manager->persist($itemIngredient);
+        }
     }
 }
