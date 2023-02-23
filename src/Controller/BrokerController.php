@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class BrokerController extends AbstractController
 {
     #[Route('/broker', name: 'app_broker')]
-    public function index(PushItemsService $t, ItemRepository $itemRepository): Response
+    public function index(ItemRepository $itemRepository): Response
     {
         $items = $itemRepository->findAll();
         $statistics = [];
@@ -24,7 +24,6 @@ class BrokerController extends AbstractController
             $ingredients[] = $stats;
         }
         dd($items[0],$statistics,$ingredients);
-        //$t->bddConverter();
         return $this->render('broker/index.html.twig', [
             'controller_name' => 'BrokerController',
             'items' => $items,

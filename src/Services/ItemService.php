@@ -8,7 +8,7 @@ use App\Entity\Statistic;
 use App\Repository\RuneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-class PushItemsService
+class ItemService
 {
     public array $itemTypes;
     public array $runes;
@@ -64,7 +64,6 @@ class PushItemsService
                     $this->manager->persist($newIngredient);
                 }
             }
-            dump($newItem);
             $this->manager->persist($newItem);
         }
         $this->manager->flush();
