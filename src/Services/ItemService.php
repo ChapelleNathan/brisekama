@@ -18,6 +18,7 @@ class ItemService
     public EntityManagerInterface $manager;
     private $statistics;
     private $ingredientsArray;
+    private IngredientRepository $test;
 
     public function __construct(
         CallDofApiService $callDofApiService,
@@ -31,7 +32,7 @@ class ItemService
         $this->manager = $manager;
     }
 
-    public function dbConverter(IngredientRepository $ingredientRepository)
+    public function dbConverter()
     {
         foreach ($this->itemTypes as $item) {
             $newItem = new Item();
@@ -75,7 +76,7 @@ class ItemService
 
                         $itemIngredient->setIngredient($newIngredient);
                     } else {
-                        $fetchedIngredient = $ingredientRepository->findByAnkamaId($ingredient['ankamaId']);
+                        $fetchedIngredient = $this->test->findByAnkamaId($ingredient['ankamaId']);
                         $itemIngredient->setIngredient($fetchedIngredient[0]);
                     }
                     $this->manager->persist($itemIngredient);

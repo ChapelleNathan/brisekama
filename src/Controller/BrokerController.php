@@ -17,7 +17,7 @@ class BrokerController extends AbstractController
     #[Route('/broker', name: 'app_broker')]
     public function index(ItemService $i, ItemRepository $t, IngredientRepository $s): Response
     {
-        $i->dbConverter($s);
+        //$i->dbConverter($s);
         $items = $t->findAll();
         return $this->render('broker/index.html.twig', [
             'controller_name' => 'BrokerController',

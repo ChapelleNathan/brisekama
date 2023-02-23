@@ -64,4 +64,5 @@ class ItemStatistic
 
         return $this;
     }
+
 }

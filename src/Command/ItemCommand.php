@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Repository\ItemRepository;
 use App\Services\ItemService;
 use App\Services\StatisticService;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -19,7 +20,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class ItemCommand extends Command
 {
     private  $itemService;
-    private $statisticService;
+    private $statisticService; 
 
     public function __construct(ItemService $itemService, StatisticService $statisticService) {
         parent::__construct();
@@ -34,7 +35,7 @@ class ItemCommand extends Command
         $io = new SymfonyStyle($input, $output);
         
         $this->statisticService->createStatistics();
-        //$this->itemService->bddConverter();
+        $this->itemService->dbConverter();
 
         $io->success('All data from DofApi are pushed in the database !');
 
