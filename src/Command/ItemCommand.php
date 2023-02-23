@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Services\ItemService;
+use App\Services\StatisticService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -15,13 +16,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'push:items',
     description: 'fetch all items from dofApi, treat them, and push them in the database',
 )]
-class PushItemsCommand extends Command
+class ItemCommand extends Command
 {
     private  $itemService;
+    private $statisticService;
 
-    public function __construct(ItemService $itemService) {
+    public function __construct(ItemService $itemService, StatisticService $statisticService) {
         parent::__construct();
         $this->itemService = $itemService;
+        $this->statisticService = $statisticService;
     }
     protected function configure(): void
     {}
@@ -30,7 +33,8 @@ class PushItemsCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         
-        $this->itemService->bddConverter();
+        $this->statisticService->createStatistics();
+        //$this->itemService->bddConverter();
 
         $io->success('All data from DofApi are pushed in the database !');
 

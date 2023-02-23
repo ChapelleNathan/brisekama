@@ -19,7 +19,7 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-    App\Command\PushItemsCommand:
+    App\Command\ItemCommand:
         tags: [{ name: 'console.command' }]
 
     # add more service definitions when explicit configuration is needed

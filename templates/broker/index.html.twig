@@ -3,5 +3,26 @@
 {% block title %}Hello BrokerController!{% endblock %}
 
 {% block body %}
-
+    {% for item in items %}
+        <img src="{{ item.imgUrl }}" alt="">
+        <p>Nom: {{ item.name }}</p>
+        <p>level : {{ item.level }} </p>
+        <p>Type : {{ item.type }}</p>
+        <p>
+        Statistiques : 
+        <ul>
+            {% for stat in item.itemStatistics %}
+                <p>{{ stat.statistic.name }} : {{ stat.quantity }}</p>
+            {% endfor %}
+        </ul>
+        <p>
+        Recette
+        <ul>
+            {% for ingredient in item.ingredient %}
+                <p>{{ ingredient.name }} : {{ ingredient.quantity }}</p>
+            {% endfor %}
+        </ul>
+        </p>
+        </p>
+    {% endfor %}
 {% endblock %}

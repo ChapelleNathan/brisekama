@@ -4,27 +4,25 @@ namespace App\Services;
 
 use App\Entity\Ingredient;
 use App\Entity\Item;
+use App\Entity\ItemStatistic;
 use App\Entity\Statistic;
 use App\Repository\RuneRepository;
+use App\Repository\StatisticRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ItemService
 {
     public array $itemTypes;
-    public array $runes;
     public EntityManagerInterface $manager;
-    private array $statNames;
+    private $statistics;
 
-    public function __construct(CallDofApiService $callDofApiService, RuneRepository $runeRepository, EntityManagerInterface $manager) {
-        $this->runes = $runeRepository->findAll();
+    public function __construct(CallDofApiService $callDofApiService, StatisticRepository $statisticRepository, EntityManagerInterface $manager) {
+        $this->statistics = $statisticRepository->findAll();
         $this->itemTypes = $callDofApiService->getItems();
         $this->manager = $manager;
-        foreach ($this->runes as $rune ) {
-            $this->statNames[] = $rune->getStatistic();
-        }
     }
 
-    public function bddConverter()
+    public function dbConverter()
     {
         foreach ($this->itemTypes as $item) {
             $newItem = new Item();
@@ -34,25 +32,20 @@ class ItemService
             $newItem->setType($item['type']);
             $newItem->setImgUrl($item['imgUrl']);
             $newItem->setUrl($item['url']);
-            foreach ($item['statistics'] as $statistics) {
-                if(array_search(key($statistics), $this->statNames)){
-                    foreach ($statistics as $statistic) {
-                            $newStatistic = new Statistic();
-                            $newStatistic->setName(key($statistics));
-                            foreach ($this->runes as $rune) {
-                                if ($rune->getStatistic() === $newStatistic->getName()) {
-                                    $newStatistic->setRune($rune);
-                                }
-                            }
-                            $statistic['max'] ? $newStatistic->setValue($statistic['max']) : $newStatistic->setValue($statistic['min']);
-                            if($newStatistic->getRune()){
-                                $newItem->addStatistic($newStatistic);
-                            }
-                            $this->manager->persist($newStatistic);
-                        
+            foreach ($item['statistics'] as $itemStat) {
+                foreach ($this->statistics as $statistic) {
+                    if ($statistic->getName() === key($itemStat)) {
+                        $newItemStat = new ItemStatistic();
+                        $newItemStat->setStatistic($statistic);
+                        $newItemStat->setItem($newItem);
+                        $itemStat[$statistic->getName()]['max'] ? $quantity = $itemStat[$statistic->getName()]['max'] : $quantity = $itemStat[$statistic->getName()]['min'];
+                        $newItemStat->setQuantity($quantity);
+                        $this->manager->persist($newItemStat);
+                        $newItem->addItemStatistic($newItemStat);
                     }
                 }
             }
+            ;
             foreach ($item['recipe'] as $ingredients) {
                 foreach ($ingredients as $ingredient) {
                     $newIngredient = new Ingredient();

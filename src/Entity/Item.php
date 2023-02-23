@@ -33,20 +33,20 @@ class Item
     #[ORM\Column(length: 255)]
     private ?string $url = null;
 
-    #[ORM\ManyToMany(targetEntity: Statistic::class)]
-    private Collection $statistic;
-
     #[ORM\ManyToMany(targetEntity: Ingredient::class)]
     private Collection $ingredient;
 
     #[ORM\ManyToMany(targetEntity: Server::class, mappedBy: 'item')]
     private Collection $servers;
 
+    #[ORM\OneToMany(mappedBy: 'item', targetEntity: ItemStatistic::class, orphanRemoval: true)]
+    private Collection $itemStatistics;
+
     public function __construct()
     {
-        $this->statistic = new ArrayCollection();
         $this->ingredient = new ArrayCollection();
         $this->servers = new ArrayCollection();
+        $this->itemStatistics = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,30 +127,6 @@ class Item
     }
 
     /**
-     * @return Collection<int, Statistic>
-     */
-    public function getStatistic(): Collection
-    {
-        return $this->statistic;
-    }
-
-    public function addStatistic(Statistic $statistic): self
-    {
-        if (!$this->statistic->contains($statistic)) {
-            $this->statistic->add($statistic);
-        }
-
-        return $this;
-    }
-
-    public function removeStatistic(Statistic $statistic): self
-    {
-        $this->statistic->removeElement($statistic);
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Ingredient>
      */
     public function getIngredient(): Collection
@@ -196,6 +172,36 @@ class Item
     {
         if ($this->servers->removeElement($server)) {
             $server->removeItem($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ItemStatistic>
+     */
+    public function getItemStatistics(): Collection
+    {
+        return $this->itemStatistics;
+    }
+
+    public function addItemStatistic(ItemStatistic $itemStatistic): self
+    {
+        if (!$this->itemStatistics->contains($itemStatistic)) {
+            $this->itemStatistics->add($itemStatistic);
+            $itemStatistic->setItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeItemStatistic(ItemStatistic $itemStatistic): self
+    {
+        if ($this->itemStatistics->removeElement($itemStatistic)) {
+            // set the owning side to null (unless already changed)
+            if ($itemStatistic->getItem() === $this) {
+                $itemStatistic->setItem(null);
+            }
         }
 
         return $this;

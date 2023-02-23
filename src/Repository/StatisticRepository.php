@@ -39,6 +39,14 @@ class StatisticRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllByName(): ?array
+    {
+        return $this->createQueryBuilder('s')
+        ->select('s.name')
+        ->getQuery()
+        ->getResult();
+    }
+
 //    /**
 //     * @return Statistic[] Returns an array of Statistic objects
 //     */
