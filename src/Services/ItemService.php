@@ -4,8 +4,10 @@ namespace App\Services;
 
 use App\Entity\Ingredient;
 use App\Entity\Item;
+use App\Entity\ItemIngredient;
 use App\Entity\ItemStatistic;
 use App\Entity\Statistic;
+use App\Repository\IngredientRepository;
 use App\Repository\RuneRepository;
 use App\Repository\StatisticRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,14 +17,21 @@ class ItemService
     public array $itemTypes;
     public EntityManagerInterface $manager;
     private $statistics;
+    private $ingredientsArray;
 
-    public function __construct(CallDofApiService $callDofApiService, StatisticRepository $statisticRepository, EntityManagerInterface $manager) {
+    public function __construct(
+        CallDofApiService $callDofApiService,
+        StatisticRepository $statisticRepository,
+        EntityManagerInterface $manager,
+        IngredientRepository $ingredientRepository,
+        ) {
+        $this->ingredientsArray = $ingredientRepository->findAll();
         $this->statistics = $statisticRepository->findAll();
         $this->itemTypes = $callDofApiService->getItems();
         $this->manager = $manager;
     }
 
-    public function dbConverter()
+    public function dbConverter(IngredientRepository $ingredientRepository)
     {
         foreach ($this->itemTypes as $item) {
             $newItem = new Item();
@@ -38,23 +47,38 @@ class ItemService
                         $newItemStat = new ItemStatistic();
                         $newItemStat->setStatistic($statistic);
                         $newItemStat->setItem($newItem);
-                        $itemStat[$statistic->getName()]['max'] ? $quantity = $itemStat[$statistic->getName()]['max'] : $quantity = $itemStat[$statistic->getName()]['min'];
+                        $itemStat[$statistic->getName()]['max']
+                            ? $quantity = $itemStat[$statistic->getName()]['max']
+                            : $quantity = $itemStat[$statistic->getName()]['min'];
                         $newItemStat->setQuantity($quantity);
                         $this->manager->persist($newItemStat);
                         $newItem->addItemStatistic($newItemStat);
                     }
                 }
-            }
-            ;
+            };
             foreach ($item['recipe'] as $ingredients) {
                 foreach ($ingredients as $ingredient) {
-                    $newIngredient = new Ingredient();
-                    $newIngredient->setAnkamaId($ingredient['ankamaId']);
-                    $newIngredient->setImgUrl($ingredient['imgUrl']);
-                    $newIngredient->setQuantity($ingredient['quantity']);
-                    $newIngredient->setName(key($ingredients));
-                    $newItem->addIngredient($newIngredient);
-                    $this->manager->persist($newIngredient);
+                    $itemIngredient = new ItemIngredient();
+                    $newItem->addItemIngredient($itemIngredient);
+                    $itemIngredient->setItem($newItem);
+                    $itemIngredient->setQuantity($ingredient['quantity']);
+                    $ankama_ids = [];
+                    foreach ($this->ingredientsArray as $ingredientArray) {
+                        $ankama_ids[] = $ingredientArray->getAnkamaId();
+                    }
+                    if (!$this->ingredientsArray || !in_array($ingredient['ankamaId'], $ankama_ids)) {
+                        $newIngredient = new Ingredient();
+                        $newIngredient->setName(key($ingredients));
+                        $newIngredient->setAnkamaId($ingredient['ankamaId']);
+                        $newIngredient->setImgUrl($ingredient['imgUrl']);
+                        $this->manager->persist($newIngredient);
+
+                        $itemIngredient->setIngredient($newIngredient);
+                    } else {
+                        $fetchedIngredient = $ingredientRepository->findByAnkamaId($ingredient['ankamaId']);
+                        $itemIngredient->setIngredient($fetchedIngredient[0]);
+                    }
+                    $this->manager->persist($itemIngredient);
                 }
             }
             $this->manager->persist($newItem);

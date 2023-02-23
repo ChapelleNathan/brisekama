@@ -12,14 +12,14 @@
         Statistiques : 
         <ul>
             {% for stat in item.itemStatistics %}
-                <p>{{ stat.statistic.name }} : {{ stat.quantity }}</p>
+                <li><p>{{ stat.statistic.name }} : {{ stat.quantity }}</p></li>
             {% endfor %}
         </ul>
         <p>
         Recette
         <ul>
-            {% for ingredient in item.ingredient %}
-                <p>{{ ingredient.name }} : {{ ingredient.quantity }}</p>
+            {% for ingredient in item.itemIngredients %}
+                <li><p>{{ ingredient.ingredient.name }} : {{ ingredient.quantity }}</p></li>
             {% endfor %}
         </ul>
         </p>

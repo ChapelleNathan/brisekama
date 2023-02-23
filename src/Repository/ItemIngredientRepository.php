@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\Ingredient;
+use App\Entity\ItemIngredient;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Ingredient>
+ * @extends ServiceEntityRepository<ItemIngredient>
  *
- * @method Ingredient|null find($id, $lockMode = null, $lockVersion = null)
- * @method Ingredient|null findOneBy(array $criteria, array $orderBy = null)
- * @method Ingredient[]    findAll()
- * @method Ingredient[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ItemIngredient|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ItemIngredient|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ItemIngredient[]    findAll()
+ * @method ItemIngredient[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class IngredientRepository extends ServiceEntityRepository
+class ItemIngredientRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Ingredient::class);
+        parent::__construct($registry, ItemIngredient::class);
     }
 
-    public function save(Ingredient $entity, bool $flush = false): void
+    public function save(ItemIngredient $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class IngredientRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Ingredient $entity, bool $flush = false): void
+    public function remove(ItemIngredient $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -39,17 +39,8 @@ class IngredientRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByAnkamaId(int $ankamaId)
-    {
-        return $this->createQueryBuilder('i')
-            ->where('i.ankama_id LIKE :ankamaId')
-            ->setParameter('ankamaId', $ankamaId)
-            ->getQuery()
-            ->getResult();
-    }
-
 //    /**
-//     * @return Ingredient[] Returns an array of Ingredient objects
+//     * @return ItemIngredient[] Returns an array of ItemIngredient objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -63,7 +54,7 @@ class IngredientRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Ingredient
+//    public function findOneBySomeField($value): ?ItemIngredient
 //    {
 //        return $this->createQueryBuilder('i')
 //            ->andWhere('i.exampleField = :val')

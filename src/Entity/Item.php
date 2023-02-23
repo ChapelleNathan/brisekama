@@ -33,20 +33,20 @@ class Item
     #[ORM\Column(length: 255)]
     private ?string $url = null;
 
-    #[ORM\ManyToMany(targetEntity: Ingredient::class)]
-    private Collection $ingredient;
-
     #[ORM\ManyToMany(targetEntity: Server::class, mappedBy: 'item')]
     private Collection $servers;
 
     #[ORM\OneToMany(mappedBy: 'item', targetEntity: ItemStatistic::class, orphanRemoval: true)]
     private Collection $itemStatistics;
 
+    #[ORM\OneToMany(mappedBy: 'item', targetEntity: ItemIngredient::class, orphanRemoval: true)]
+    private Collection $itemIngredients;
+
     public function __construct()
     {
-        $this->ingredient = new ArrayCollection();
         $this->servers = new ArrayCollection();
         $this->itemStatistics = new ArrayCollection();
+        $this->itemIngredients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,30 +127,6 @@ class Item
     }
 
     /**
-     * @return Collection<int, Ingredient>
-     */
-    public function getIngredient(): Collection
-    {
-        return $this->ingredient;
-    }
-
-    public function addIngredient(Ingredient $ingredient): self
-    {
-        if (!$this->ingredient->contains($ingredient)) {
-            $this->ingredient->add($ingredient);
-        }
-
-        return $this;
-    }
-
-    public function removeIngredient(Ingredient $ingredient): self
-    {
-        $this->ingredient->removeElement($ingredient);
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Server>
      */
     public function getServers(): Collection
@@ -201,6 +177,36 @@ class Item
             // set the owning side to null (unless already changed)
             if ($itemStatistic->getItem() === $this) {
                 $itemStatistic->setItem(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ItemIngredient>
+     */
+    public function getItemIngredients(): Collection
+    {
+        return $this->itemIngredients;
+    }
+
+    public function addItemIngredient(ItemIngredient $itemIngredient): self
+    {
+        if (!$this->itemIngredients->contains($itemIngredient)) {
+            $this->itemIngredients->add($itemIngredient);
+            $itemIngredient->setItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeItemIngredient(ItemIngredient $itemIngredient): self
+    {
+        if ($this->itemIngredients->removeElement($itemIngredient)) {
+            // set the owning side to null (unless already changed)
+            if ($itemIngredient->getItem() === $this) {
+                $itemIngredient->setItem(null);
             }
         }
 
