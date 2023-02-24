@@ -40,7 +40,7 @@ class CallDofApiService
     {
         $items = json_decode($this->fetchItems(), true);
         $weapons = json_decode($this->fetchWeapons(), true);
-        $test = ['items' => $items, 'weapons' => $weapons];
-        return $test;
+        $allItems = ['items' => $items, 'weapons' => $weapons];
+        return $allItems;
     }
 }
