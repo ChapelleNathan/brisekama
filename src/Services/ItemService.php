@@ -36,6 +36,9 @@ class ItemService
     {
         foreach ($this->itemTypes as $items) {
             foreach ($items as $item) {
+                if ($item['type'] == 'Dofus' || $item['type'] === 'Trophée') {
+                    break;
+                }
                 $newItem = new Item();          
                 $newItem->setAnkamaId($item['ankamaId']);
                 $newItem->setName($item['name']);
