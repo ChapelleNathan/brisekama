@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Repository\ItemRepository;
+use App\Repository\StatisticRepository;
 use App\Services\ItemService;
 use App\Services\StatisticService;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -15,17 +16,19 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'push:items',
-    description: 'fetch all items from dofApi, treat them, and push them in the database',
+    description: 'Fetch all items from dofApi, treat them, and push them in the database',
 )]
 class ItemCommand extends Command
 {
     private  $itemService;
-    private $statisticService; 
+    private $lastItem;
+    private $lastStat;
 
-    public function __construct(ItemService $itemService, StatisticService $statisticService) {
+    public function __construct(ItemService $itemService, ItemRepository $itemRepository, StatisticRepository $statisticRepository) {
         parent::__construct();
         $this->itemService = $itemService;
-        $this->statisticService = $statisticService;
+        $this->lastItem = $itemRepository->findOneBy([],['id' => 'DESC']);
+        $this->lastStat = $statisticRepository->findOneBy([],['id' => 'DESC']);
     }
     protected function configure(): void
     {}
@@ -34,11 +37,17 @@ class ItemCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         
-        $this->statisticService->createStatistics();
+        if(!$this->lastStat) {
+            $io->error('There is no statistic in Database, please do the command \'php bin/console push:stats\'');
+            return Command::FAILURE;
+        }
+        if($this->lastItem) {
+            $io->error('All Items are already in the Database');
+            return Command::FAILURE;
+        }
         $this->itemService->dbConverter();
-
         $io->success('All data from DofApi are pushed in the database !');
-
+        
         return Command::SUCCESS;
     }
 }

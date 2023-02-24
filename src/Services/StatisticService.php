@@ -8,20 +8,16 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class StatisticService
 {
-    private $stats = [
-        'Intelligence',
-        'Dommages Terre',
-        'Force',
-        'Vitalité',
-        'Sagesse',
-        'PA'
-    ];
+    private $stats;
     private $manager;
     private $runes;
 
     public function __construct(EntityManagerInterface $manager, RuneRepository $runeRepository) {
         $this->manager = $manager;
         $this->runes = $runeRepository->findAll();
+        foreach ($this->runes as $rune ) {
+            $this->stats[] = $rune->getStatistic();
+        }
     }
 
     public function createStatistics() {

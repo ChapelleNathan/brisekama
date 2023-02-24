@@ -20,7 +20,7 @@ class CallDofApiService
         //TODO when finished with bdd, try with all items and not with one
         $response = $this->client->request(
             'GET',
-            'https://fr.dofus.dofapi.fr/equipments/160'//ou 70
+            'https://fr.dofus.dofapi.fr/equipments'
         );
        return $this->itemsJSON = $response->getContent();
     }
@@ -30,7 +30,7 @@ class CallDofApiService
         //TODO when finished with bdd, try with all weapons and not with one
         $response = $this->client->request(
             'GET',
-            'https://fr.dofus.dofapi.fr/weapons/44'
+            'https://fr.dofus.dofapi.fr/weapons'
         );
 
         return $this->weaponsJSON = $response->getContent();
