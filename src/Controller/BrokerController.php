@@ -10,12 +10,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class BrokerController extends AbstractController
 {
     #[Route('/broker', name: 'app_broker')]
-    public function index(ItemRepository $t): Response
+    public function index(): Response
     {
-        $items = $t->findAll();
         return $this->render('broker/index.html.twig', [
             'controller_name' => 'BrokerController',
-            'items' => $items,
         ]);
     }
 }
