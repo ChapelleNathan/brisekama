@@ -9,6 +9,9 @@ start:
 	symfony serve -d
 	npm run watch
 
+start.npm:
+	npm run watch
+
 stop:
 	symfony server:stop
 

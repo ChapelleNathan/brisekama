@@ -29,6 +29,12 @@ Encore
     .addStyleEntry('broker','/assets/styles/broker.scss')
     .addEntry('app', './assets/app.js')
 
+    //Enable Vue.js
+    .enableVueLoader()
+
+    //Vue Apps
+    .addEntry('brokerVue','./assets/broker.js')
+
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
 

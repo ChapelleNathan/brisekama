@@ -4,7 +4,11 @@
 {% block stylesheets %}
 	{{ encore_entry_link_tags('broker') }}
 {% endblock %}
+{% block javascripts %}
+	{{ encore_entry_script_tags('brokerVue') }}
+{% endblock %}
 {% block body %}
+	<div id="app"></div>
 	<div class="item-container container p-3 mt-4 rounded">
 		<div class="row search mb-3">
 			{{ form_start(form) }}
