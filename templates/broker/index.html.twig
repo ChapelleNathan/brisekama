@@ -29,13 +29,14 @@
 			<div class="server_ratio col-4">
 				<div class="input-group mb-3">
 					<span class="input-group-text" id="basic-addon1">Taux {{ servers[0].name | title }}</span>
-					<input type="text" class="form-control" placeholder="taux %" aria-label="Username" aria-describedby="basic-addon1">
+					<input type="text" class="form-control" placeholder="taux %" value="102" aria-label="Username" aria-describedby="basic-addon1">
+                    <span class="input-group-text" id='basic-addon1'>%</span>
                     <button type="button" class="btn btn-secondary">Sauvegarder</button>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<table class="table table-hover">
+			<table class="table table-hover text-center">
 				<thead>
 					<tr>
 						<th scope="col">Caractéristiques</th>
@@ -51,7 +52,7 @@
 						<tr>
 							<th scope="row">{{ stat.statistic.name }}</th>
 							<td>{{ stat.quantity }}</td>
-							<td>{{ stat.statistic.rune.price }}</td>
+							<td>{{ stat.statistic.rune.price ?: 'pas de prix' }}</td>
 							<td>...</td>
 							<td>...</td>
 							<td>...</td>
