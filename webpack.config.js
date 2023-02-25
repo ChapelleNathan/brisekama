@@ -26,6 +26,7 @@ Encore
     .addStyleEntry('variable','./assets/styles/variable.scss')
     .addStyleEntry('navbar','./assets/styles/navbar.scss')
     .addStyleEntry('home','./assets/styles/home.scss')
+    .addStyleEntry('broker','/assets/styles/broker.scss')
     .addEntry('app', './assets/app.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
