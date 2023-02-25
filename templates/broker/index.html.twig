@@ -1,7 +1,65 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Hello BrokerController!{% endblock %}
-
+{% block title %}Hello BrokerController!
+{% endblock %}
+{% block stylesheets %}
+	{{ encore_entry_link_tags('broker') }}
+{% endblock %}
 {% block body %}
-    
+	<div class="item-container container p-3 mt-4 rounded">
+		<div class="row search mb-3">
+			<div class="input-group col-6">
+				<div class="test">
+					<select class="form-select" aria-label="Default select example">
+						{% for server in servers %}
+							{% if loop.index == 0 %}
+								<option selected value="{{ server.id }}">{{ server.name }}</option>
+							{% else %}
+								<option value="{{ server.id }}">{{ server.name }}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				</div>
+				<input class="form-control" type="text" placeholder="Recherchez un item" aria-label="default input example">
+			</div>
+		</div>
+		<div class="row container mb-2 justify-content-between">
+			<h2 class="col-5">
+                {{ lastItem.name }} (Niv. {{ lastItem.level }})
+            </h2>
+			<div class="server_ratio col-4">
+				<div class="input-group mb-3">
+					<span class="input-group-text" id="basic-addon1">Taux {{ servers[0].name | title }}</span>
+					<input type="text" class="form-control" placeholder="taux %" value="102" aria-label="Username" aria-describedby="basic-addon1">
+                    <span class="input-group-text" id='basic-addon1'>%</span>
+                    <button type="button" class="btn btn-secondary">Sauvegarder</button>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<table class="table table-hover text-center">
+				<thead>
+					<tr>
+						<th scope="col">Caractéristiques</th>
+						<th scope="col">Statistiques</th>
+						<th scope="col">Prix unitaire</th>
+						<th scope="col">Quantité (Focus)</th>
+						<th scope="col">Prix (focus)</th>
+						<th scope="col">Aucun focus</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for stat in lastItem.ItemStatistics %}
+						<tr>
+							<th scope="row">{{ stat.statistic.name }}</th>
+							<td>{{ stat.quantity }}</td>
+							<td>{{ stat.statistic.rune.price ?: 'pas de prix' }}</td>
+							<td>...</td>
+							<td>...</td>
+							<td>...</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 {% endblock %}

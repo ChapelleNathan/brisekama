@@ -1,17 +1,17 @@
 {% block navbar %}
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <h1 class="navbar-brand m-2" href="#">Bris'kamas</h1>
+    <h1 class="navbar-brand m-2" href="{{ path('home') }}">Bris'kamas</h1>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-end m-2" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#"><p>Home</p></a>
+          <a class="nav-link active" aria-current="page" href="{{ path('home') }}"><p>Home</p></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#"><p>Brisage</p></a>
+          <a class="nav-link" href="{{ path('broker') }}"><p>Brisage</p></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#"><p>Tuto</p></a>

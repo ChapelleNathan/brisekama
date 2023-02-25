@@ -15,9 +15,6 @@ class Server
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $ratio = null;
-
     #[ORM\ManyToMany(targetEntity: Item::class, inversedBy: 'servers')]
     private Collection $item;
 
@@ -32,18 +29,6 @@ class Server
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getRatio(): ?int
-    {
-        return $this->ratio;
-    }
-
-    public function setRatio(int $ratio): self
-    {
-        $this->ratio = $ratio;
-
-        return $this;
     }
 
     /**
