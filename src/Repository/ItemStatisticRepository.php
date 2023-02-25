@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Item;
 use App\Entity\ItemStatistic;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -37,6 +38,15 @@ class ItemStatisticRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function searchByName($name): array
+    {
+        return $this->createQueryBuilder('i')
+        ->where('i.name LIKE :name')
+        ->setParameter('name', '%' . $name . '%')
+        ->orderBy('i.name', 'ASC')
+        ->getQuery()->getResult();
     }
 
 //    /**
