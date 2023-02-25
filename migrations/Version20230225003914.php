@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230223190925 extends AbstractMigration
+final class Version20230225003914 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -25,7 +25,7 @@ final class Version20230223190925 extends AbstractMigration
         $this->addSql('CREATE TABLE item_ingredient (id INT AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, ingredient_id INT NOT NULL, quantity INT NOT NULL, INDEX IDX_D61E507A126F525E (item_id), INDEX IDX_D61E507A933FE08C (ingredient_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE item_statistic (id INT AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, statistic_id INT NOT NULL, quantity INT NOT NULL, INDEX IDX_6841506C126F525E (item_id), INDEX IDX_6841506C53B6268F (statistic_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE rune (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(50) NOT NULL, price INT DEFAULT NULL, weight INT NOT NULL, statistic VARCHAR(50) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE server (id INT AUTO_INCREMENT NOT NULL, ratio INT NOT NULL, name VARCHAR(50) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE server (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(50) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE server_item (server_id INT NOT NULL, item_id INT NOT NULL, INDEX IDX_949B54FE1844E6B7 (server_id), INDEX IDX_949B54FE126F525E (item_id), PRIMARY KEY(server_id, item_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE statistic (id INT AUTO_INCREMENT NOT NULL, rune_id INT NOT NULL, name VARCHAR(50) NOT NULL, UNIQUE INDEX UNIQ_649B469CE8E5031 (rune_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE messenger_messages (id BIGINT AUTO_INCREMENT NOT NULL, body LONGTEXT NOT NULL, headers LONGTEXT NOT NULL, queue_name VARCHAR(190) NOT NULL, created_at DATETIME NOT NULL, available_at DATETIME NOT NULL, delivered_at DATETIME DEFAULT NULL, INDEX IDX_75EA56E0FB7336F0 (queue_name), INDEX IDX_75EA56E0E3BD61CE (available_at), INDEX IDX_75EA56E016BA31DB (delivered_at), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -46,6 +46,7 @@ final class Version20230223190925 extends AbstractMigration
         ('do per di',15,'% Dommages distance'),('do per ar',15,'% Dommages d\'armes'),('do per so',15,'% Dommages aux sorts'),('do per mé',15,'% Dommages mêlée'),
         ('ré per mé',15,'% Résitance mêlée'),('ré per di',15,'% Résistance distance'),('pi per',2,'Puissance (pièges)'),('so',10,'Soins'),('cri',10,'% Critique'),
         ('do ren',10,'Renvoie dommages'),('invo',30,'Invocations'),('po',51,'Portée'),('ga pm',90,'PM'),('ga pa',100,'PA')");
+        $this->addSql("INSERT INTO server (name) VALUES ('imagiro'),('orukam'),('hell mina'),('tylezia')");
     }
 
     public function down(Schema $schema): void

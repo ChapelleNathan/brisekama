@@ -7,5 +7,6 @@ INSERT INTO rune (name, weight, statistic) VALUES ('ine',1,'Intelligence'),('fo'
 ('do air',5,'Dommages Air'),('do eau',5,'Dommages Eau'),('do pou',5,'Dommages Poussée'),('do cri',5,'Dommages Critiques'),('do pi',5,'Dommages Pièges'),
 ('do per di',15,'% Dommages distance'),('do per ar',15,'% Dommages d\'armes'),('do per so',15,'% Dommages aux sorts'),('do per mé',15,'% Dommages mêlée'),
 ('ré per mé',15,'% Résitance mêlée'),('ré per di',15,'% Résistance distance'),('pi per',2,'Puissance (pièges)'),('so',10,'Soins'),('cri',10,'% Critique'),
-('do ren',10,'Renvoie dommages'),('invo',30,'Invocations'),('po',51,'Portée'),('ga pm',90,'PM'),('ga pa',100,'PA')
+('do ren',10,'Renvoie dommages'),('invo',30,'Invocations'),('po',51,'Portée'),('ga pm',90,'PM'),('ga pa',100,'PA');
+INSERT INTO server (name) VALUES ('imagiro'),('orukam'),('hell mina'),('tylezia');
 
