@@ -4,6 +4,7 @@
 {% block stylesheets %}
 {% endblock %}
 {% block javascripts %}
+{{ encore_entry_script_tags('brokerJs') }}
 {% endblock %}
 {% block body %}
 	<div class="item-container container p-3 mt-4 rounded">
@@ -25,11 +26,12 @@
 				</div>
 			{{ form_end(form) }}
 		</div>
+		{% if item %}
 		<div class="row container mb-2 justify-content-between">
 			<h2 class="col-5">
-				{{ lastItem.name }}
+				{{ item.name }}
 				(Niv.
-				{{ lastItem.level }})
+				{{ item.level }})
 			</h2>
 			<div class="server_ratio col-4">
 				<div class="input-group mb-3">
@@ -54,7 +56,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% for stat in lastItem.ItemStatistics %}
+					{% for stat in item.ItemStatistics %}
 						<tr>
 							<th scope="row">{{ stat.statistic.name }}</th>
 							<td>{{ stat.quantity }}</td>
@@ -67,5 +69,7 @@
 				</tbody>
 			</table>
 		</div>
+		{% endif %}
+		
 	</div>
 {% endblock %}

@@ -39,6 +39,15 @@ class ItemRepository extends ServiceEntityRepository
         }
     }
 
+    public function findOneByName($search): ?Item
+    {
+        return $this->createQueryBuilder('i')
+        ->where('i.name = :search')
+        ->setParameter('search', $search)
+        ->getQuery()
+        ->getOneOrNullResult();
+    }
+
 //    /**
 //     * @return Item[] Returns an array of Item objects
 //     */

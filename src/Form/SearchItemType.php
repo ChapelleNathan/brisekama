@@ -12,12 +12,7 @@ class SearchItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('search', SearchType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' =>'Rechercher un item'
-                ]
-            ])
+            ->add('search', ItemAutocompleteField::class)
         ;
     }
 

@@ -28,6 +28,7 @@ Encore
     .addStyleEntry('home','./assets/styles/home.scss')
     .addStyleEntry('broker','/assets/styles/broker.scss')
     .addEntry('app', './assets/app.js')
+    .addEntry('brokerJs', './assets/js/broker.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

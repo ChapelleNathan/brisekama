@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Item;
 use App\Form\SearchItemType;
 use App\Repository\ItemRepository;
 use App\Repository\ServerRepository;
@@ -15,22 +16,17 @@ class BrokerController extends AbstractController
     #[Route('/broker', name: 'broker')]
     public function index(ItemRepository $itemRepository, ServerRepository $serverRepository, Request $request): Response
     {
+        $item = new Item();
         $form = $this->createForm(SearchItemType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $datas = $form->getData();
-
-            $search = $datas['search'];
-
-            $items = $itemRepository->searchByName($search);
-            dump($items);
+            $item = $datas['search'];
         }
-        $servers = $serverRepository->findAll();
-        $lastItem = $itemRepository->findOneBy([],['id' => 'DESC']);
         return $this->render('broker/index.html.twig', [
             'controller_name' => 'BrokerController',
-            'lastItem' => $lastItem,
-            'servers' => $servers,
+            'item' => $item,
+            'servers' => $serverRepository->findAll(),
             'form' => $form->createView(),
         ]);
     }
