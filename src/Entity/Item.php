@@ -33,20 +33,20 @@ class Item
     #[ORM\Column(length: 255)]
     private ?string $url = null;
 
-    #[ORM\ManyToMany(targetEntity: Server::class, mappedBy: 'item')]
-    private Collection $servers;
-
     #[ORM\OneToMany(mappedBy: 'item', targetEntity: ItemStatistic::class, orphanRemoval: true)]
     private Collection $itemStatistics;
 
     #[ORM\OneToMany(mappedBy: 'item', targetEntity: ItemIngredient::class, orphanRemoval: true)]
     private Collection $itemIngredients;
 
+    #[ORM\OneToMany(mappedBy: 'item', targetEntity: ItemServer::class, orphanRemoval: true)]
+    private Collection $itemServers;
+
     public function __construct()
     {
-        $this->servers = new ArrayCollection();
         $this->itemStatistics = new ArrayCollection();
         $this->itemIngredients = new ArrayCollection();
+        $this->itemServers = new ArrayCollection();
     }
 
     public function __toString():string
@@ -132,33 +132,6 @@ class Item
     }
 
     /**
-     * @return Collection<int, Server>
-     */
-    public function getServers(): Collection
-    {
-        return $this->servers;
-    }
-
-    public function addServer(Server $server): self
-    {
-        if (!$this->servers->contains($server)) {
-            $this->servers->add($server);
-            $server->addItem($this);
-        }
-
-        return $this;
-    }
-
-    public function removeServer(Server $server): self
-    {
-        if ($this->servers->removeElement($server)) {
-            $server->removeItem($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, ItemStatistic>
      */
     public function getItemStatistics(): Collection
@@ -212,6 +185,36 @@ class Item
             // set the owning side to null (unless already changed)
             if ($itemIngredient->getItem() === $this) {
                 $itemIngredient->setItem(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ItemServer>
+     */
+    public function getItemServers(): Collection
+    {
+        return $this->itemServers;
+    }
+
+    public function addItemServer(ItemServer $itemServer): self
+    {
+        if (!$this->itemServers->contains($itemServer)) {
+            $this->itemServers->add($itemServer);
+            $itemServer->setItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeItemServer(ItemServer $itemServer): self
+    {
+        if ($this->itemServers->removeElement($itemServer)) {
+            // set the owning side to null (unless already changed)
+            if ($itemServer->getItem() === $this) {
+                $itemServer->setItem(null);
             }
         }
 

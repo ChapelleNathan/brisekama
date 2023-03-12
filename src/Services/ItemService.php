@@ -5,10 +5,12 @@ namespace App\Services;
 use App\Entity\Ingredient;
 use App\Entity\Item;
 use App\Entity\ItemIngredient;
+use App\Entity\ItemServer;
 use App\Entity\ItemStatistic;
 use App\Entity\Statistic;
 use App\Repository\IngredientRepository;
 use App\Repository\RuneRepository;
+use App\Repository\ServerRepository;
 use App\Repository\StatisticRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -19,17 +21,20 @@ class ItemService
     private $statistics;
     private $ingredientsArray;
     private IngredientRepository $ingredientRepository;
+    private $servers;
 
     public function __construct(
         CallDofApiService $callDofApiService,
         StatisticRepository $statisticRepository,
         EntityManagerInterface $manager,
         IngredientRepository $ingredientRepository,
+        ServerRepository $serverRepository,
         ) {
         $this->ingredientsArray = $ingredientRepository->findAll();
         $this->statistics = $statisticRepository->findAll();
         $this->itemTypes = $callDofApiService->getItems();
         $this->manager = $manager;
+        $this->servers = $serverRepository->findAll();
     }
 
     public function dbConverter()
@@ -37,7 +42,7 @@ class ItemService
         foreach ($this->itemTypes as $items) {
             foreach ($items as $item) {
                 if (!($item['type'] === 'Dofus' || $item['type'] === 'Trophée')) {
-                    $newItem = new Item();          
+                    $newItem = new Item();         
                     $newItem->setAnkamaId($item['ankamaId']);
                     $newItem->setName($item['name']);
                     $newItem->setLevel($item['level']);
@@ -85,6 +90,13 @@ class ItemService
                             }
                             $this->manager->persist($itemIngredient);
                         }
+                    }
+                    foreach ($this->servers as $server) {
+                        $newItemServer = new ItemServer();
+                        $newItemServer->setItem($newItem);
+                        $newItemServer->setServer($server);
+                        $newItemServer->setPercentage(100);
+                        $this->manager->persist($newItemServer);
                     }
                     $this->manager->persist($newItem);
                 }

@@ -15,44 +15,20 @@ class Server
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Item::class, inversedBy: 'servers')]
-    private Collection $item;
-
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
+    #[ORM\OneToMany(mappedBy: 'server', targetEntity: ItemServer::class)]
+    private Collection $itemServers;
+
     public function __construct()
     {
-        $this->item = new ArrayCollection();
+        $this->itemServers = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection<int, Item>
-     */
-    public function getItem(): Collection
-    {
-        return $this->item;
-    }
-
-    public function addItem(Item $item): self
-    {
-        if (!$this->item->contains($item)) {
-            $this->item->add($item);
-        }
-
-        return $this;
-    }
-
-    public function removeItem(Item $item): self
-    {
-        $this->item->removeElement($item);
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -63,6 +39,36 @@ class Server
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ItemServer>
+     */
+    public function getItemServers(): Collection
+    {
+        return $this->itemServers;
+    }
+
+    public function addItemServer(ItemServer $itemServer): self
+    {
+        if (!$this->itemServers->contains($itemServer)) {
+            $this->itemServers->add($itemServer);
+            $itemServer->setServer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeItemServer(ItemServer $itemServer): self
+    {
+        if ($this->itemServers->removeElement($itemServer)) {
+            // set the owning side to null (unless already changed)
+            if ($itemServer->getServer() === $this) {
+                $itemServer->setServer(null);
+            }
+        }
 
         return $this;
     }
