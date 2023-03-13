@@ -38,6 +38,13 @@ class ServerRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function getFirstServer(): ?Server
+    {
+        return $this->createQueryBuilder('s')
+        ->setMaxResults(1)
+        ->getQuery()
+        ->getOneOrNullResult();
+    }
 
 //    /**
 //     * @return Server[] Returns an array of Server objects

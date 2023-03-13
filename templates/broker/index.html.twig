@@ -11,17 +11,14 @@
 			{{ form_start(form) }}
 			<div class="input-group">
 				<span>
-					<select class="form-select ">
-						{% for server in servers %}
-							{% if loop.index == 0 %}
-								<option value="{{ server.id }}" selected>{{ server.name }}</option>
-							{% else %}
-								<option value="{{ server.id }}">{{ server.name }}</option>
-							{% endif %}
-						{% endfor %}
-					</select>
+				{{ form_widget(form.server, { attr : { class : 'form-select' } }) }}
 				</span>
 				{{ form_widget(form.search) }}
+				<button class="btn btn-secondary">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+  					<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+					</svg>
+				</button>
 			</div>
 			{{ form_end(form) }}
 		</div>
@@ -35,10 +32,10 @@
 				<div class="server_ratio col-4">
 					<div class="input-group mb-3">
 						<span class="input-group-text" id="basic-addon1">Taux
-							{{ servers[0].name | title }}
+							{{ server.name | title }}
 						</span>
 						{% for itemServer in item.itemServers %}
-							{% if servers[0] == itemServer.server %}
+							{% if server == itemServer.server %}
 								<input type="text" class="form-control" placeholder="taux %" value="{{ itemServer.percentage }}" aria-label="Username" aria-describedby="basic-addon1">
 								<span class="input-group-text" id='basic-addon1'>%</span>
 								<button type="button" class="btn btn-secondary">Sauvegarder</button>
