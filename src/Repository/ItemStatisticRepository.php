@@ -40,15 +40,6 @@ class ItemStatisticRepository extends ServiceEntityRepository
         }
     }
 
-    public function searchByName($name): array
-    {
-        return $this->createQueryBuilder('i')
-        ->where('i.name LIKE :name')
-        ->setParameter('name', '%' . $name . '%')
-        ->orderBy('i.name', 'ASC')
-        ->getQuery()->getResult();
-    }
-
 //    /**
 //     * @return ItemStatistic[] Returns an array of ItemStatistic objects
 //     */

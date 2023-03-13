@@ -14,11 +14,11 @@ class ItemServer
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'itemServers')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: 'item_id', referencedColumnName: 'id', nullable: false)]
     private ?Item $item = null;
 
     #[ORM\ManyToOne(inversedBy: 'itemServers')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: 'server_id', referencedColumnName: 'id', nullable: false)]
     private ?Server $server = null;
 
     #[ORM\Column]

@@ -39,6 +39,19 @@ class ItemServerRepository extends ServiceEntityRepository
         }
     }
 
+    public function getOneByItemServerIds(int $serverId, int $itemId): ?ItemServer
+    {
+        return $this->createQueryBuilder('itemServ')
+        ->join('itemServ.item', 'i')
+        ->join('itemServ.server', 's')
+        ->where('i.id = :itemId')
+        ->andWhere('s.id = :serverId')
+        ->setParameter('itemId', $itemId)
+        ->setParameter('serverId', $serverId)
+        ->getQuery()
+        ->getOneOrNullResult();
+    }
+
 //    /**
 //     * @return ItemServer[] Returns an array of ItemServer objects
 //     */

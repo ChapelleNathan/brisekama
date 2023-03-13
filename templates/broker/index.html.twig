@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Hello BrokerController!
+{% block title %}{{ parent() }} - Broker
 {% endblock %}
 {% block stylesheets %}{% endblock %}
 {% block javascripts %}
@@ -11,7 +11,7 @@
 			{{ form_start(form) }}
 			<div class="input-group">
 				<span>
-				{{ form_widget(form.server, { attr : { class : 'form-select' } }) }}
+				{{ form_widget(form.server, { attr : { 'class' : 'form-select' }, 'data' : server }) }}
 				</span>
 				{{ form_widget(form.search) }}
 				<button class="btn btn-secondary">
@@ -30,18 +30,29 @@
 					{{ item.level }})
 				</h2>
 				<div class="server_ratio col-4">
-					<div class="input-group mb-3">
-						<span class="input-group-text" id="basic-addon1">Taux
-							{{ server.name | title }}
-						</span>
-						{% for itemServer in item.itemServers %}
-							{% if server == itemServer.server %}
-								<input type="text" class="form-control" placeholder="taux %" value="{{ itemServer.percentage }}" aria-label="Username" aria-describedby="basic-addon1">
-								<span class="input-group-text" id='basic-addon1'>%</span>
-								<button type="button" class="btn btn-secondary">Sauvegarder</button>
-							{% endif %}
-						{% endfor %}
-					</div>
+					{% for itemServer in item.itemServers %}
+					{% if server == itemServer.server %}
+						{{ form_start(percentage) }}
+						    <div class="input-group mb-3">
+						    	<span class="input-group-text" id="basic-addon1">Taux
+						    		{{ server.name | title }}
+						    	</span>
+						    		{{ form_widget(percentage.percentage, {
+									
+						    			attr: { 
+						    				'class' : 'form-control',
+						    				'value' :  itemServer.percentage, 
+						    				}
+						    			}) 
+						    		}}
+									<input type="hidden" name="serverId" value="{{ server.id }}">
+									<input type="hidden" name="itemId" value="{{ item.id }}">
+						    		<span class="input-group-text" id='basic-addon1'>%</span>
+						            <button class="btn btn-secondary rounded-end">Sauvegarder</button>
+						    </div>
+						{{ form_end(percentage) }}
+					{% endif %}
+					{% endfor %}
 				</div>
 			</div>
 			<div class="row">
