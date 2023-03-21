@@ -6,23 +6,22 @@
 	{{ encore_entry_script_tags('brokerJs') }}
 {% endblock %}
 {% block body %}
+	{{ form_start(form) }}
 	<div class="item-container container p-3 mt-4 rounded">
 		<div class="row search mb-3">
-			{{ form_start(form) }}
 			<div class="input-group">
 				<span>
-				{{ form_widget(form.server, { attr : { 'class' : 'form-select' }, 'data' : server }) }}
+				{{ form_widget(form.searchType.server, { attr : { 'class' : 'form-select' }, 'data' : server }) }}
 				</span>
-				{{ form_widget(form.search) }}
+				{{ form_widget(form.searchType.search) }}
 				<button class="btn btn-secondary">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
   					<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
 					</svg>
 				</button>
 			</div>
-			{{ form_end(form) }}
 		</div>
-		{% if item %}
+		{% if item.id != null %}
 			<div class="row container mb-2 justify-content-between">
 				<h2 class="col-5">
 					{{ item.name }}
@@ -32,12 +31,11 @@
 				<div class="server_ratio col-4">
 					{% for itemServer in item.itemServers %}
 					{% if server == itemServer.server %}
-						{{ form_start(percentage) }}
 						    <div class="input-group mb-3">
 						    	<span class="input-group-text" id="basic-addon1">Taux
 						    		{{ server.name | title }}
 						    	</span>
-						    		{{ form_widget(percentage.percentage, {
+						    		{{ form_widget(form.percentageType.percentage, {
 									
 						    			attr: { 
 						    				'class' : 'form-control',
@@ -48,15 +46,14 @@
 						    		<span class="input-group-text" id='basic-addon1'>%</span>
 						            <button class="btn btn-secondary rounded-end">Sauvegarder</button>
 						    </div>
-							{{ form_widget(percentage.serverId, { attr : {
+							{{ form_widget(form.percentageType.serverId, { attr : {
 								'hidden' : 'true',
 								'value' : server.id
 								} })}}
-							{{ form_widget(percentage.itemId, { attr : {
+							{{ form_widget(form.percentageType.itemId, { attr : {
 								'hidden' : 'true',
 								'value' : item.id
 							} })}}
-						{{ form_end(percentage) }}
 					{% endif %}
 					{% endfor %}
 				</div>
@@ -87,7 +84,11 @@
 					</tbody>
 				</table>
 			</div>
+		{% else %}
+			{{ form_widget(form.percentageType.percentage, { disabled : true, attr : { 'hidden' : true } }) }}
+			{{ form_widget(form.percentageType.serverId, { disabled : true, attr : { 'hidden' : true } }) }}
+			{{ form_widget(form.percentageType.itemId, { disabled : true, attr : { 'hidden' : true } }) }}
 		{% endif %}
-
 	</div>
+	{{ form_end(form) }}
 {% endblock %}
