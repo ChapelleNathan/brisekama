@@ -19,6 +19,8 @@ class ItemPercentageType extends AbstractType
     {
         $builder
             ->add('percentage', IntegerType::class)
+            ->add('serverId', IntegerType::class)
+            ->add('itemId', IntegerType::class)
         ;
     }
 

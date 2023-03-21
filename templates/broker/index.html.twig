@@ -45,11 +45,17 @@
 						    				}
 						    			}) 
 						    		}}
-									<input type="hidden" name="serverId" value="{{ server.id }}">
-									<input type="hidden" name="itemId" value="{{ item.id }}">
 						    		<span class="input-group-text" id='basic-addon1'>%</span>
 						            <button class="btn btn-secondary rounded-end">Sauvegarder</button>
 						    </div>
+							{{ form_widget(percentage.serverId, { attr : {
+								'hidden' : 'true',
+								'value' : server.id
+								} })}}
+							{{ form_widget(percentage.itemId, { attr : {
+								'hidden' : 'true',
+								'value' : item.id
+							} })}}
 						{{ form_end(percentage) }}
 					{% endif %}
 					{% endfor %}

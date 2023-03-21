@@ -65,7 +65,6 @@ class BrokerController extends AbstractController
         $percentage->handleRequest($request);
 
         if ($percentage->isSubmitted() && $percentage->isValid()) {
-            dd('toto');
             $datas = $percentage->getData();
             $serverId = $datas['serverId'];
             $itemId = $datas['itemId'];
